@@ -1,0 +1,7 @@
+Pri generovaní čísel je potrebné dodržať minimálne tieto požiadavky:
+1. Pre každý náhodný jav máme jeden generátor náhodných čísel, tento sa v niektorých prípadoch, resp. pri použití niektorých rozdelení môže skladať z ďalších generátorov.
+2. Použitie už vytvoreného generátora nikdy nemeníme.
+Napr. nie je dovolené volať nad jednou inštanciou rôzne parametre. Random1.NexInt(11) a následne Random1.NexInt(10).
+3. Dôsledne dodržiavame zaradenie čísel na krajoch intervalu.
+4. Každý generátor je nutné práve raz nainicializovať "kvalitnou" násadou. Počas vykonávanie replikácií nie je dovolené opätovné vytváranie generátorov, alebo reinicializácia.
+5. Náhodné čísla "nezahadzujeme". Vygenerujeme vždy číslo z takého rozsahu aký je vhodný.
