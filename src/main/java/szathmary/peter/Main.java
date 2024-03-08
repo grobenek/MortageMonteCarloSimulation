@@ -1,13 +1,12 @@
 package szathmary.peter;
 
-import javax.swing.*;
 import szathmary.peter.simulation.core.MonteCarloSimulationCore;
-import szathmary.peter.simulation.core.MortgageLoanMonteCarloStrategyA;
+import szathmary.peter.simulation.core.MortgageLoanMonteCarlo;
 
 public class Main {
   public static void main(String[] args) {
     MonteCarloSimulationCore monteCarloSimulationCore =
-        new MortgageLoanMonteCarloStrategyA(10000000);
+        new MortgageLoanMonteCarlo(10000000);
     monteCarloSimulationCore.startSimulation();
   }
 }
