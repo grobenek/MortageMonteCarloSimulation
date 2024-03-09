@@ -17,16 +17,15 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
   public static final int MONTHS_IN_YEAR = 12;
   private static final int YEARS_OF_MORTGAGE_LOAN = 10;
   private static final int TOTAL_LOANED_MONEY = 100_000;
-  private final List<IObserver> observerList;
+  private final int[] fixationPeriodsStrategyA = {5, 3, 1, 1};
+  private final int[] fixationPeriodsStrategyB = {3, 3, 3, 1};
+  private final int[] fixationPeriodsStrategyC = {3, 1, 5, 1};
   private final RandomGenerator<Integer> year2024And2025Generator;
   private final RandomGenerator<Double> year2026And2027Generator;
   private final RandomGenerator<Double> year2028And2029Generator;
   private final Generator<Double> year2030And2031Generator;
   private final RandomGenerator<Double> year2032And2033Generator;
-  private final int[] fixationPeriodsStrategyA = {5, 3, 1, 1};
-  private final int[] fixationPeriodsStrategyB = {3, 3, 3, 1};
-  private final int[] fixationPeriodsStrategyC = {3, 1, 5, 1};
-
+  private final List<IObserver> observerList;
   private double totalMoneyPaidStrategyA;
   private double totalMoneyPaidStrategyB;
   private double totalMoneyPaidStrategyC;
@@ -34,7 +33,6 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
   private int currentYearStrategyA;
   private int currentYearStrategyB;
   private int currentYearStrategyC;
-
   private double moneyToPayLeftStrategyA;
   private double moneyToPayLeftStrategyB;
   private double moneyToPayLeftStrategyC;
@@ -216,7 +214,7 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
 
   @Override
   public void afterReplication() {
-    //    sendNotifications();
+    sendNotifications();
   }
 
   @Override
@@ -232,8 +230,8 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
       double monthlyInterestRate, double moneyToPayLeftStrategy, int yearsToPayLeftStrategy) {
     return ((moneyToPayLeftStrategy
             * monthlyInterestRate
-            * Math.pow((1.0 + monthlyInterestRate), 12.0 * yearsToPayLeftStrategy)))
-        / ((Math.pow((1.0 + monthlyInterestRate), 12.0 * yearsToPayLeftStrategy)) - 1.0);
+            * Math.pow((1.0 + monthlyInterestRate), MONTHS_IN_YEAR * yearsToPayLeftStrategy)))
+        / ((Math.pow((1.0 + monthlyInterestRate), MONTHS_IN_YEAR * yearsToPayLeftStrategy)) - 1.0);
   }
 
   private double getPrincipalLeft(
@@ -247,11 +245,11 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
     }
 
     return moneyToPayLeftStrategy
-        * (((Math.pow(1 + monthlyInterestRate, 12.0 * yearsToPayLeftStrategy))
+        * (((Math.pow(1 + monthlyInterestRate, MONTHS_IN_YEAR * yearsToPayLeftStrategy))
                 - (Math.pow(
                     1 + monthlyInterestRate,
-                    12.0 * fixationPeriodsStrategy[fixationIndexStrategy])))
-            / ((Math.pow(1 + monthlyInterestRate, 12.0 * yearsToPayLeftStrategy)) - 1.0));
+                    MONTHS_IN_YEAR * fixationPeriodsStrategy[fixationIndexStrategy])))
+            / ((Math.pow(1 + monthlyInterestRate, MONTHS_IN_YEAR * yearsToPayLeftStrategy)) - 1.0));
   }
 
   @Override
