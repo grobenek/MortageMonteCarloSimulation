@@ -207,7 +207,7 @@ public class MainWindow extends JFrame implements IMainWindow {
     double min = series.getMinY();
     double max = series.getMaxY();
 
-    chart.getXYPlot().getRangeAxis().setRange(min - 15.0, max + 15.0);
+    chart.getXYPlot().getRangeAxis().setRange(min - (min * 0.0001), max + (max * 0.0001));
 
     chart.fireChartChanged();
     resultTextPane.setText("Result: " + lastResult + " €");
