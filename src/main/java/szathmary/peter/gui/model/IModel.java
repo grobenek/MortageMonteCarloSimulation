@@ -7,4 +7,6 @@ public interface IModel extends IReplicationObservable, IObserver {
   void startSimulation();
 
   void setParameters(MortgageLoanMonteCarloConfiguration mortgageLoanMonteCarloConfiguration);
+
+  void stopSimulation();
 }

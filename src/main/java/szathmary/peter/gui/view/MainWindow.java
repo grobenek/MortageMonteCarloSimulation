@@ -35,6 +35,7 @@ public class MainWindow extends JFrame implements IMainWindow {
   private JTextPane resultTextPaneStrategyB;
   private JTextPane resultTextPaneStrategyC;
   private JTextField cutFirstXValuesTextField;
+  private JTextField loanPrincipalTextField;
 
   public MainWindow(IController controller) {
     this.controller = controller;
@@ -69,7 +70,7 @@ public class MainWindow extends JFrame implements IMainWindow {
             false);
 
     NumberAxis rangeAxisStrategyA = (NumberAxis) chartStrategyA.getXYPlot().getRangeAxis();
-    rangeAxisStrategyA.setAutoRangeIncludesZero(false);
+    rangeAxisStrategyA.setAutoRange(false);
 
     chartPanelStrategyA = new ChartPanel(chartStrategyA);
     chartPanelStrategyA.setMouseZoomable(true);
@@ -90,7 +91,7 @@ public class MainWindow extends JFrame implements IMainWindow {
             false);
 
     NumberAxis rangeAxisStrategyB = (NumberAxis) chartStrategyB.getXYPlot().getRangeAxis();
-    rangeAxisStrategyB.setAutoRangeIncludesZero(false);
+    rangeAxisStrategyB.setAutoRange(false);
 
     chartPanelStrategyB = new ChartPanel(chartStrategyB);
     chartPanelStrategyB.setMouseZoomable(true);
@@ -111,7 +112,7 @@ public class MainWindow extends JFrame implements IMainWindow {
             false);
 
     NumberAxis rangeAxisStrategyC = (NumberAxis) chartStrategyC.getXYPlot().getRangeAxis();
-    rangeAxisStrategyC.setAutoRangeIncludesZero(false);
+    rangeAxisStrategyC.setAutoRange(false);
 
     chartPanelStrategyC = new ChartPanel(chartStrategyC);
     chartPanelStrategyC.setMouseZoomable(true);
@@ -145,7 +146,8 @@ public class MainWindow extends JFrame implements IMainWindow {
     controller.setParameters(
         Long.parseLong(numberOfReplicationsTextField.getText()),
         Integer.parseInt(sampleSizeTextField.getText()),
-        Long.parseLong(cutFirstXValuesTextField.getText()));
+        Long.parseLong(cutFirstXValuesTextField.getText()),
+        Long.parseLong(loanPrincipalTextField.getText()));
   }
 
   @Override
@@ -154,7 +156,8 @@ public class MainWindow extends JFrame implements IMainWindow {
       return;
     }
 
-    simulationWorker.cancel(true);
+    controller.cancelSimulation();
+    simulationWorker.cancel(false);
   }
 
   @Override
@@ -201,7 +204,12 @@ public class MainWindow extends JFrame implements IMainWindow {
             : series.getMaxX() + sampleSize,
         lastResult);
 
+    double min = series.getMinY();
+    double max = series.getMaxY();
+
+    chart.getXYPlot().getRangeAxis().setRange(min - 15.0, max + 15.0);
+
     chart.fireChartChanged();
-    resultTextPane.setText("Result: " + lastResult);
+    resultTextPane.setText("Result: " + lastResult + " €");
   }
 }

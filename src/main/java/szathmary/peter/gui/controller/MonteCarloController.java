@@ -2,8 +2,9 @@ package szathmary.peter.gui.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import szathmary.peter.gui.model.MortgageLoanMonteCarloConfiguration;
 import szathmary.peter.gui.model.IModel;
+import szathmary.peter.gui.model.MonteCarloModel;
+import szathmary.peter.gui.model.MortgageLoanMonteCarloConfiguration;
 import szathmary.peter.gui.observable.IObservable;
 import szathmary.peter.gui.observable.IObserver;
 import szathmary.peter.gui.observable.IReplicationObservable;
@@ -26,11 +27,25 @@ public class MonteCarloController implements IController {
   }
 
   @Override
-  public void setParameters(long numberOfReplications, int sampleSize, long numberOfFirstReplicationsToCut) {
+  public void setParameters(
+      long numberOfReplications,
+      long sampleSize,
+      long numberOfFirstReplicationsToCut,
+      long principalLoan) {
     MortgageLoanMonteCarloConfiguration mortgageLoanMonteCarloConfiguration =
-        new MortgageLoanMonteCarloConfiguration(numberOfReplications, sampleSize, numberOfFirstReplicationsToCut);
+        new MortgageLoanMonteCarloConfiguration(
+            numberOfReplications, sampleSize, numberOfFirstReplicationsToCut, principalLoan);
 
     model.setParameters(mortgageLoanMonteCarloConfiguration);
+  }
+
+  @Override
+  public void cancelSimulation() {
+    if (!(model instanceof MonteCarloModel)) {
+      return;
+    }
+
+    model.stopSimulation();
   }
 
   @Override

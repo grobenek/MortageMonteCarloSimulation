@@ -16,7 +16,7 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
   public static final int STARTING_YEAR = 2024;
   public static final int MONTHS_IN_YEAR = 12;
   private static final int YEARS_OF_MORTGAGE_LOAN = 10;
-  private static final int TOTAL_LOANED_MONEY = 100_000;
+  private final long totalLoanedMoney;
   private final int[] fixationPeriodsStrategyA = {5, 3, 1, 1};
   private final int[] fixationPeriodsStrategyB = {3, 3, 3, 1};
   private final int[] fixationPeriodsStrategyC = {3, 1, 5, 1};
@@ -43,8 +43,10 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
   private int fixationIndexStrategyB;
   private int fixationIndexStrategyC;
 
-  public MortgageLoanMonteCarlo(long numberOfReplications) {
+  public MortgageLoanMonteCarlo(long numberOfReplications, long loanPrincipal) {
     super(numberOfReplications);
+
+    this.totalLoanedMoney = loanPrincipal;
 
     this.observerList = new ArrayList<>();
 
@@ -86,9 +88,9 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
     yearsToPayLeftStrategyB = YEARS_OF_MORTGAGE_LOAN;
     yearsToPayLeftStrategyC = YEARS_OF_MORTGAGE_LOAN;
 
-    moneyToPayLeftStrategyA = TOTAL_LOANED_MONEY;
-    moneyToPayLeftStrategyB = TOTAL_LOANED_MONEY;
-    moneyToPayLeftStrategyC = TOTAL_LOANED_MONEY;
+    moneyToPayLeftStrategyA = totalLoanedMoney;
+    moneyToPayLeftStrategyB = totalLoanedMoney;
+    moneyToPayLeftStrategyC = totalLoanedMoney;
 
     fixationIndexStrategyA = 0;
     fixationIndexStrategyB = 0;
@@ -105,7 +107,7 @@ public class MortgageLoanMonteCarlo extends MonteCarloSimulationCore {
   }
 
   private void replicationStrategyA() {
-    int currentFixation = fixationPeriodsStrategyA[0];
+    int currentFixation = fixationPeriodsStrategyA[0]; // TODO spravit zastavenie simulacie
     fixationIndexStrategyA = 0;
     double annualInterestRate = getAnnualInteresRateByYear(currentYearStrategyA);
     double monthlyInterestRate = getMonthlyInterestRate(annualInterestRate);

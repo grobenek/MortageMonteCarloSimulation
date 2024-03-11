@@ -32,12 +32,18 @@ public class MonteCarloModel implements IModel {
       MortgageLoanMonteCarloConfiguration mortgageLoanMonteCarloConfiguration) {
     monteCarloSimulation =
         new MortgageLoanMonteCarlo(
-            mortgageLoanMonteCarloConfiguration.numberOfReplications());
+            mortgageLoanMonteCarloConfiguration.numberOfReplications(),
+            mortgageLoanMonteCarloConfiguration.principalLoan());
 
     monteCarloSimulation.attach(this);
 
     sampleSize = mortgageLoanMonteCarloConfiguration.sampleSize();
     numberOfReplicationsToCut = mortgageLoanMonteCarloConfiguration.numberOfReplicationsToCut();
+  }
+
+  @Override
+  public void stopSimulation() {
+    monteCarloSimulation.setRunning(false);
   }
 
   @Override
@@ -67,7 +73,6 @@ public class MonteCarloModel implements IModel {
     currentReplication++;
 
     if (currentReplication <= numberOfReplicationsToCut) {
-      System.out.println("Skipped " + System.currentTimeMillis());
       return;
     }
 
