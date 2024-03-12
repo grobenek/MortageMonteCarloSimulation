@@ -200,14 +200,14 @@ public class MainWindow extends JFrame implements IMainWindow {
 
     series.add(
         series.getItemCount() == 0
-            ? series.getItemCount() + sampleSize
+            ? Long.parseLong(cutFirstXValuesTextField.getText()) + sampleSize
             : series.getMaxX() + sampleSize,
         lastResult);
 
     double min = series.getMinY();
     double max = series.getMaxY();
 
-    chart.getXYPlot().getRangeAxis().setRange(min - (min * 0.0001), max + (max * 0.0001));
+    chart.getXYPlot().getRangeAxis().setRange(min - 0.2, max + 0.2);
 
     chart.fireChartChanged();
     resultTextPane.setText("Result: " + lastResult + " €");
